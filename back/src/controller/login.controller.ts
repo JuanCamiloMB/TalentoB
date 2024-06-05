@@ -11,14 +11,13 @@ export async function handleLogInRoute(req: Request, res: Response) {
       .json({ message: "Username and password are required" });
   }
 
-  const user = await logInUser(username, password);
+  const userToken = await logInUser(username, password);
 
-  if (user instanceof Error) {
-    return res.status(400).json({ message: user.message });
+  if (userToken instanceof Error) {
+    return res.status(400).json({ message: userToken.message });
   }
 
   return res
-    .setHeader("Set-Cookie", `token=${user.username}`)
     .status(200)
-    .json({ message: "User logedIn", user: user });
+    .json({ message: "User logedIn", userToken: userToken });
 }

@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import UserService from '../../services/user/user.service';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload{
+  iat: number,
+  id_user: number,
+  username: string
+}
 
 @Component({
   selector: 'app-register',
@@ -27,8 +34,7 @@ export class RegisterComponent {
     const { name, email, password, password2, username } =
       this.registerForm.value;
 
-    if (!name || !email || !password || !password2 || !username)
-      return;
+    if (!name || !email || !password || !password2 || !username) return;
 
     if (password !== password2) {
       alert('Passwords do not match');
@@ -37,9 +43,11 @@ export class RegisterComponent {
 
     return this.user
       .register(name, username, email, password)
-      .subscribe((respuesta:any) => {
-        document.cookie = `token=${username}`;
-        document.cookie = `userId=${respuesta.userData.id_user}`;
+      .subscribe((respuesta: any) => {
+        const userData = jwtDecode(respuesta.userToken) as JwtPayload;
+        document.cookie = `username=${userData.username}`;
+        document.cookie = `userId=${userData.id_user}`;
+        document.cookie = `jwt=${respuesta.userToken}`
         this.user.setIsAuth = true;
         this.user.setUsername = email;
         this.router.navigate(['/']);

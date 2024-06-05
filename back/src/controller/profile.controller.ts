@@ -14,6 +14,7 @@ export async function handleUpdateProfile(req:Request, res:Response) {
         email: string;
       } = req.body.userData;
       
+
     const user = await updateProfile(id_user, name, username, email)
 
     return res

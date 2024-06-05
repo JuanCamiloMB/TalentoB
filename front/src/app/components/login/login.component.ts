@@ -2,6 +2,13 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import UserService from '../../services/user/user.service';
+import { jwtDecode } from 'jwt-decode';
+
+interface JwtPayload {
+  iat: number;
+  id_user: number;
+  username: string;
+}
 
 @Component({
   selector: 'app-login',
@@ -24,11 +31,11 @@ export class LoginComponent {
     if (!username || !password) return;
 
     return this.user.logIn(username, password).subscribe((response: any) => {
-      document.cookie = `token=${username}`;
-      document.cookie = `userId=${response.user.id_user}`
-      this.user.userData = response
+      const user = jwtDecode(response.userToken) as JwtPayload;
+      document.cookie = `token=${user.username}`;
+      document.cookie = `userId=${user.id_user}`;
+      document.cookie = `jwt=${response.userToken}`
       this.user.setIsAuth = true;
-      this.user.setUsername = username;
       this.router.navigate(['/']);
     });
   }

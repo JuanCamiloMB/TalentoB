@@ -22,13 +22,6 @@ export class EditprofileComponent {
 
   ngOnInit() {
     this._userService.fetchUser().subscribe((user: any) => {
-      const date = new Date(user.birth_date);
-
-      const year = date.getUTCFullYear();
-      const month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-      const day = date.getUTCDate().toString().padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day}`;
-
       this.updateForm.setValue({
         username: user.username,
         name: user.name,

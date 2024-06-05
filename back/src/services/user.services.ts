@@ -1,6 +1,7 @@
 import { SALT } from "../config";
 import { User } from "../db.mysql";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export async function registerUser(
   name: string,
@@ -16,7 +17,8 @@ export async function registerUser(
       email: email,
       password: password,
     });
-    return createdUser.toJSON();
+    const token = jwt.sign({id_user: createdUser.toJSON().id_user, username: createdUser.toJSON().username},'qwerty')
+    return token;
   } catch (err) {
     return err as Error;
   }
@@ -30,7 +32,7 @@ export async function logInUser(
     const user = await User.findOne({
       where: { username },
     });
-
+    
     if (!user) throw new Error("User not found");
     const isValidPassword = await bcrypt.compare(
       password,
@@ -38,8 +40,8 @@ export async function logInUser(
     );
 
     if (!isValidPassword) throw new Error("Invalid password");
-
-    return user.toJSON();
+    const token = jwt.sign({id_user: user.toJSON().id_user, username: user.toJSON().username},'qwerty')
+    return token;
   } catch (err) {
     return err as Error;
   }

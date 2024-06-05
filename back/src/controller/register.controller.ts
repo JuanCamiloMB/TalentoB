@@ -27,13 +27,12 @@ export async function handleRegisterRoute(req: Request, res: Response) {
     return res.status(400).json({ message: "Not enougth data" });
   }
 
-  const user = await registerUser(name, username, email, password);
+  const userToken = await registerUser(name, username, email, password);
 
-  if (user instanceof Error) {
-    return res.status(400).json({ message: user.message });
+  if (userToken instanceof Error) {
+    return res.status(400).json({ message: userToken.message });
   }
   return res
-    .setHeader("Set-Cookie", `token=${username}`)
     .status(200)
-    .json({ message: "User registered", userData: user});
+    .json({ message: "User registered", userToken: userToken});
 }
