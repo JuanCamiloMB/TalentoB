@@ -37,11 +37,13 @@ export default class UserService {
 
   fetchUser() {
     const userId = this._cookieService.get('userId');
+    const jwt = this._cookieService.get('jwt');
     const url: string = `${API}/getUser`;
 
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
+        Authorization: jwt,
         withCredentials: 'true',
       }),
     };
@@ -61,23 +63,20 @@ export default class UserService {
     return {};
   }
 
-  updateUser(userData: {
-    id_user: any;
-    name: any;
-    username: any;
-    email: any;
-  }) {
+  updateUser(userData: { id_user: any; name: any; username: any; email: any }) {
+    const jwt = this._cookieService.get('jwt');
     const url: string = `${API}/update_profile`;
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
+        Authorization: jwt,
         withCredentials: 'true',
       }),
     };
     const body = {
       userData,
     };
-    return this.http.post(url, body, headers)
+    return this.http.post(url, body, headers);
   }
 
   logIn(username: string, password: string) {
@@ -96,12 +95,7 @@ export default class UserService {
     return this.http.post(url, body, headers);
   }
 
-  register(
-    name: string,
-    username: string,
-    email: string,
-    password: string,
-  ) {
+  register(name: string, username: string, email: string, password: string) {
     const url: string = `${API}/register`;
 
     const headers = {
@@ -122,11 +116,13 @@ export default class UserService {
 
   signOut() {
     this._cookieService.delete('token');
+    this._cookieService.delete('userId');
+    this._cookieService.delete('jwt');
     this.router.navigate(['/login']);
   }
 
-  searchUsers(searchString:string){
-    const url: string = `${API}/search`
+  searchUsers(searchString: string) {
+    const url: string = `${API}/search`;
     const headers = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -134,12 +130,12 @@ export default class UserService {
       }),
     };
     const body = {
-      searchString
+      searchString,
     };
     return this.http.post(url, body, headers);
   }
 
-  getOtherUser(userId:number){
+  getOtherUser(userId: number) {
     const url: string = `${API}/users/${userId}`;
 
     const headers = {
@@ -151,4 +147,3 @@ export default class UserService {
     return this.http.get(url, headers);
   }
 }
-
