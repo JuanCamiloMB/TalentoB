@@ -1,0 +1,65 @@
+<header>
+  <nav class="hidden w-full md:block md:w-auto">
+    <ul
+      class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white"
+    >
+      <li>
+        <a
+          href="/"
+          class="text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+          >Home</a
+        >
+      </li>
+      <li>
+        <a
+          href="/profile"
+          class="text-white bg-orange-500 hover:bg-orange-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2"
+          >Profile</a
+        >
+      </li>
+    </ul>
+  </nav>
+</header>
+<main class="p-10 flex justify-center items-center h-full">
+  @if (user !== null) {
+  <form
+    class="flex flex-col items-center gap-6 p-4 w-70% border border-slate-400 rounded-lg"
+    (submit)="onSubmit($event)"
+    [formGroup]="updateForm"
+  >
+  <h1 class="text-2xl font-bold">Editar perfil</h1>
+    <div class="flex gap-5">
+      <label class="font-bold">Username:</label>
+      <input
+        [defaultValue]="user.username"
+        type="text"
+        id="username"
+        name="username"
+        formControlName="username"
+      />
+    </div>
+    <div class="flex gap-5">
+      <label class="font-bold">Name:</label>
+      <input
+        [defaultValue]="user.name"
+        type="text"
+        id="name"
+        name="name"
+        formControlName="name"
+      />
+    </div>
+    <div class="flex gap-5">
+      <label class="font-bold">Email:</label>
+      <input
+        [defaultValue]="user.email"
+        type="text"
+        id="email"
+        name="email"
+        formControlName="email"
+      />
+    </div>
+    <button type="submit" class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg">Actualizar</button>
+    <a href="/profile" class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg">Cancelar</a>
+  </form>
+  }
+</main>
