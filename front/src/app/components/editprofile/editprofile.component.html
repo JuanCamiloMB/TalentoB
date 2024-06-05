@@ -1,4 +1,7 @@
-<header>
+<header class="flex flex-row justify-between">
+  <img
+    src="https://rmkcdn.successfactors.com/9645d618/7f8d803c-bda8-4c13-b99d-5.png"
+  />
   <nav class="hidden w-full md:block md:w-auto">
     <ul
       class="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white"
@@ -27,7 +30,7 @@
     (submit)="onSubmit($event)"
     [formGroup]="updateForm"
   >
-  <h1 class="text-2xl font-bold">Editar perfil</h1>
+    <h1 class="text-2xl font-bold">Editar perfil</h1>
     <div class="flex gap-5">
       <label class="font-bold">Username:</label>
       <input
@@ -58,8 +61,17 @@
         formControlName="email"
       />
     </div>
-    <button type="submit" class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg">Actualizar</button>
-    <a href="/profile" class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg">Cancelar</a>
+    <button
+      type="submit"
+      class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg"
+    >
+      Actualizar
+    </button>
+    <a
+      href="/profile"
+      class="text-white bg-orange-500 hover:bg-orange-800 p-3 rounded-lg"
+      >Cancelar</a
+    >
   </form>
   }
 </main>
