@@ -1,13 +1,18 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import UserService from '../../services/user/user.service';
 import { jwtDecode } from 'jwt-decode';
 
-interface JwtPayload{
-  iat: number,
-  id_user: number,
-  username: string
+interface JwtPayload {
+  iat: number;
+  id_user: number;
+  username: string;
 }
 
 @Component({
@@ -26,6 +31,8 @@ export class RegisterComponent {
     username: new FormControl(''),
   });
 
+  errorMsg: any = '';
+
   constructor(public user: UserService, private router: Router) {}
 
   async onSubmit(e: Event) {
@@ -34,23 +41,30 @@ export class RegisterComponent {
     const { name, email, password, password2, username } =
       this.registerForm.value;
 
-    if (!name || !email || !password || !password2 || !username) return;
-
-    if (password !== password2) {
-      alert('Passwords do not match');
+    if (!name || !email || !password || !password2 || !username) {
+      this.errorMsg = 'Ingresa todos los campos';
       return;
     }
 
-    return this.user
-      .register(name, username, email, password)
-      .subscribe((respuesta: any) => {
+    if (password !== password2) {
+      alert('Las contraseñas no concuerdan');
+      return;
+    }
+
+    return this.user.register(name, username, email, password).subscribe(
+      (respuesta: any) => {
         const userData = jwtDecode(respuesta.userToken) as JwtPayload;
         document.cookie = `username=${userData.username}`;
         document.cookie = `userId=${userData.id_user}`;
-        document.cookie = `jwt=${respuesta.userToken}`
+        document.cookie = `jwt=${respuesta.userToken}`;
         this.user.setIsAuth = true;
         this.user.setUsername = email;
         this.router.navigate(['/']);
-      });
+      },
+      (err) => {
+        this.errorMsg = 'Se presentó un error, intenta de nuevo mas tarde';
+        console.error(err);
+      }
+    );
   }
 }
