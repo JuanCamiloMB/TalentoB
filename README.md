@@ -86,4 +86,4 @@ MYSQL_PORT=6543
 
 # FrontEnd env
 
-Si se desea modificar la dirección donde el backend está corriendo ó us puerto, se puede hacer desde src/app/config.ts
+Si se desea modificar la dirección donde el backend está corriendo ó su puerto, se puede hacer desde src/app/config.ts
